@@ -16,5 +16,5 @@ def email_send(user):
     subject = 'Активация'
     to_email = user.email
     mail.send_mail(
-        subject, plain_message, 'eldarakiev33@gmail.ru', [to_email,], html_message=message
+        subject, plain_message, 'eldarakiev33@gmail.com', [to_email,], html_message=message
     )

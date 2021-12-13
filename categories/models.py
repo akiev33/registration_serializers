@@ -7,6 +7,6 @@ class Category(models.Model):
 
     def __str__(self):
         if self.sub_category:
-            return f'{self.name}-->{self.sub_category}'
-        return f'{self.name}'
+            return f'{self.id}//{self.name}-->{self.sub_category}'
+        return f'id {self.id}//{self.name}'
 
