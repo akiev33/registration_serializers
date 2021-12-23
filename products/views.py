@@ -20,6 +20,10 @@ class ProductAPIView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     pagination_class = ProductPagination
 
+    def perform_create(self, serializer):
+        serializer.validated_data['author'] = self.request.user
+        serializer.save()
+
 
     @action(detail=False, methods=['get'])
     def search(self, request, pk=None):

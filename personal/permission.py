@@ -18,6 +18,3 @@ class IsOwnerOrReadOnly(BasePermission):
             request.user and
             request.user.is_authenticated and obj.author == request.user
         )
-
-# class ExampleView(APIView):
-#     permission_classes = [IsAuthenticatedOrReadOnly]
