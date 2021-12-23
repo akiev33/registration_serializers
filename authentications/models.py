@@ -50,17 +50,12 @@ class AbstractEmailUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.email
 
-    # def email_user(self, subject, message, from_email=None, **kwargs):
-    #     """Sends an email to this User."""
-    #
-    #     send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
 class User(AbstractEmailUser):
 
     USER_TYPE_CHOICES = (
-        ('owner', 'Owner'),
-        ('reader', 'Reader'),
+        ('user', 'User'),
     )
     user_type = models.CharField(
         choices=USER_TYPE_CHOICES,

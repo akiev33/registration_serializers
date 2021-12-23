@@ -1,18 +1,21 @@
 from django.shortcuts import render
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views import View
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from authentications.serializers import RegisterSerializer, LoginSerializer
+from authentications.serializers import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
+from rest_framework.generics import UpdateAPIView
 from authentications.email import email_send
 
 User = get_user_model()
 
 
 class RegisterApiView(APIView):
+    authentication_classes = []
+    permission_classes = []
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -40,3 +43,22 @@ class ActivationView(View):
 
 class LoginApiView(TokenObtainPairView):
     serializer_class = LoginSerializer
+
+
+class LogoutApiView(APIView):
+    model = User
+    def get(self, request):
+        logout(request)
+        return Response({
+            "logout": 200
+        })
+
+
+class ChangePasswordView(UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
