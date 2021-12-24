@@ -20,7 +20,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 
     send_mail(
         # title:
-        "Password Reset for {title}".format(title="Some website title"),
+        "Сброс пароля {title}".format(title=""),
         # message:
         email_plaintext_message,
         # from:
@@ -80,27 +80,37 @@ class User(AbstractEmailUser):
     USER_TYPE_CHOICES = (
         ('user', 'User'),
     )
+    GENDER_TYPE_CHOICES = (
+        ('man', 'Man'),
+        ('woman', 'Woman')
+    )
     user_type = models.CharField(
         choices=USER_TYPE_CHOICES,
         max_length=255, blank=True
     )
-    full_name = models.CharField(
-        'Full name', max_length=255, blank=True
+
+    gender_type = models.CharField(
+        choices=GENDER_TYPE_CHOICES,
+        max_length=255, blank=True
     )
+
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField('last name', max_length=255, blank=True)
+    age = models.PositiveIntegerField()
     activation_code = models.CharField(max_length=36, blank=True)
 
     def get_full_name(self):
-        return self.full_name
+        return self.last_name
 
     def get_short_name(self):
-        return self.full_name
+        return self.last_name
 
     def create_activation_code(self):
         self.activation_code = str(uuid.uuid4())
 
     def __str__(self):
         return '{name} < {email}'.format(
-            name=self.full_name,
+            name=self.last_name,
             email=self.email
         )
 

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from personal.permission import IsOwnerOrReadOnly
 from personal.serializers import PersonalSerializers
-from personal.models import Personal
+from rest_framework.response import Response
 
 
 
@@ -9,7 +9,14 @@ from personal.models import Personal
 class PersonalAPIView(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = PersonalSerializers
-    queryset = Personal.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        first_name = request.user.first_name
+        last_name = request.user.last_name
+        age = request.user.age
+        gender = request.user.gender_type
+        return Response({"first_name": first_name, "last_name": last_name, "age": age, "gender": gender})
+
 
     def perform_create(self, serializer):
         serializer.validated_data['author'] = self.request.user

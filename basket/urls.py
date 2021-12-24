@@ -1,6 +1,13 @@
 from django.urls import path
-from .views import BasketAPIView
+from rest_framework.routers import SimpleRouter
+
+from .views import BasketAPIView, BasketDeleteAPIView
+
+
+router = SimpleRouter()
+router.register("", BasketAPIView, basename='basket')
 
 urlpatterns = [
-    path('', BasketAPIView.as_view())
+    path('basket/<int:id>/', BasketDeleteAPIView.as_view()),
 ]
+urlpatterns += router.urls

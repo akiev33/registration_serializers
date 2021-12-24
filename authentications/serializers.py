@@ -7,17 +7,24 @@ User = get_user_model()
 USER_TYPE_CHOICES = (
     ('user', 'User'),
 )
-
+GENDER_TYPE_CHOICES = (
+    ('man', 'Man'),
+    ('woman', 'Woman')
+)
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(min_length=6, required=True, write_only=True)
     password_confirmation = serializers.CharField(min_length=6, required=True, write_only=True)
     user_type = serializers.ChoiceField(choices=USER_TYPE_CHOICES, default=USER_TYPE_CHOICES[0][0])
+    gender_type = serializers.ChoiceField(choices=GENDER_TYPE_CHOICES)
+    first_name = serializers.CharField(max_length=100, required=True)
+    last_name = serializers.CharField(max_length=100, required=True)
+    age = serializers.IntegerField()
 
     class Meta:
         model = User
         fields = [
-            'email', 'user_type',  'password', 'password_confirmation'
+            'first_name', 'last_name', 'age', 'gender_type', 'email', 'user_type',  'password', 'password_confirmation',
         ]
 
     def validate_email(self, value):

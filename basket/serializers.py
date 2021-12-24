@@ -3,10 +3,9 @@ from .models import Basket
 
 
 class BasketSerializers(serializers.ModelSerializer):
+    count = serializers.IntegerField(required=True)
+    total = serializers.IntegerField(read_only=True)
     class Meta:
         model = Basket
-        fields = ('__all__')
-        extra_kwargs = {'product_id': {'required': True},
-                        'count': {'required': True}
-                        }
+        fields = ('count', 'product_id', 'total')
 
